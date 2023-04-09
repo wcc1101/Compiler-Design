@@ -8,3 +8,6 @@ test:
 	./scanner < testcase_basic > mine
 	golden_scanner < testcase_basic > answer
 	diff mine answer
+
+clean:
+	rm scanner lex.yy.c mine answer
