@@ -46,7 +46,6 @@ blank           [ \t\r]+
 <C_COMMENT>\n           printLine();
 <C_COMMENT>.            appendLine();
 
-
 "#pragma"{blank}"source"{blank}"on"{blank}*      { source = true; appendLine();}
 "#pragma"{blank}"source"{blank}"off"{blank}*     { source = false; appendLine();}
 "#pragma"{blank}"token"{blank}"on"{blank}*       { token = true; appendLine();}
