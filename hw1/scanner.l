@@ -1,9 +1,12 @@
 %{
     #include <stdio.h>
     #include <string.h>
+    #include <stdbool.h>
 
     int numLines = 0;
-    char currentLine[299];
+    char currentLine[300];
+    bool source = true;
+    bool token = true;
 
     void print();
     void printLine();
@@ -19,6 +22,7 @@ integer         [+-]?[[:digit:]]+
 float           [+-]?[[:digit:]]*\.[[:digit:]]*
 string          \".*\"
 character       '.'|'\\.*'
+blank           [ \t\r]+
 
 %x C_COMMENT
 
@@ -33,7 +37,7 @@ character       '.'|'\\.*'
 {string}                print("string:");
 {character}             print("char:");
 
-[ \t\r]+                appendLine();
+{blank}                 appendLine();
 \n                      printLine();
 
 "//"+[^\n]*+\n          { appendLine(); printLine(); }
@@ -41,10 +45,17 @@ character       '.'|'\\.*'
 <C_COMMENT>"*/"         { appendLine(); BEGIN(INITIAL); }
 <C_COMMENT>\n           printLine();
 <C_COMMENT>.            appendLine();
+
+
+"#pragma"{blank}"source"{blank}"on"{blank}*      { source = true; appendLine();}
+"#pragma"{blank}"source"{blank}"off"{blank}*     { source = false; appendLine();}
+"#pragma"{blank}"token"{blank}"on"{blank}*       { token = true; appendLine();}
+"#pragma"{blank}"token"{blank}"off"{blank}*      { token = false; appendLine();}
 %%
 
 void print(char *str) {
-    printf("#%s%s\n", str, yytext);
+    if (token)
+        printf("#%s%s\n", str, yytext);
     appendLine();
 }
 
@@ -53,7 +64,9 @@ void appendLine() {
 }
 
 void printLine() {
-    printf("%d:%s\n", ++numLines, currentLine);
+    numLines++;
+    if (source)
+        printf("%d:%s\n", numLines, currentLine);
     strcpy(currentLine, "");
 }
 
