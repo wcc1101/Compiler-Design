@@ -2,7 +2,7 @@
     #include "y.tab.h"
 
     void setVal(char *y) {
-        yylval.stringVal = (char *)malloc(strlen(y) * sizeof(char));
+        yylval.stringVal = (char *)malloc((strlen(y) + 1) * sizeof(char));
         strcpy(yylval.stringVal, y);
     }
     void setVal_float(char *y) {

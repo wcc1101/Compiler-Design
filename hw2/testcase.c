@@ -639,7 +639,7 @@ const unsigned short int a, b;
 
 const signed int a, b;
 const signed long int a, b;
-const signed long long int a, b, ____sdfda_asdf237akjfI, _, __, _____;
+const signed long long int a, b, ____sdfda_asdf23i47akjfI, _, __, _____;
 const signed short int a, b;
 
 const signed long long a, b;
